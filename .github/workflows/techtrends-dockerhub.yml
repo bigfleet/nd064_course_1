@@ -31,6 +31,5 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: "{{defaultContext}}:./project/techtrends"
-          file: "{{defaultContext}}:./project/Dockerfile"
           push: true
           tags: bigfleet/techtrends:latest
