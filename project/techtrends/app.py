@@ -68,7 +68,7 @@ def create():
                          (title, content))
             connection.commit()
             connection.close()
-            app.logger.debug("%s New article created: %s", datetime.now().strftime("%d/%m/%Y %H:%M:%S", title))
+            app.logger.debug("%s New article created: %s", datetime.now().strftime("%d/%m/%Y %H:%M:%S"), title)
             return redirect(url_for('index'))
 
     return render_template('create.html')
