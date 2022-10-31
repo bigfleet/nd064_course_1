@@ -8,6 +8,7 @@ from werkzeug.exceptions import abort
 def get_db_connection():
     connection = sqlite3.connect('database.db')
     connection.row_factory = sqlite3.Row
+    app.connection_count = app.connection_count + 1
     return connection
 
 # Function to get a post using its ID
@@ -21,6 +22,8 @@ def get_post(post_id):
 # Define the Flask application
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
+
+app.connection_count = 0
 
 # Define the main route of the web application 
 @app.route('/')
@@ -64,6 +67,30 @@ def create():
             return redirect(url_for('index'))
 
     return render_template('create.html')
+
+@app.route('/healthz')
+def healthcheck():
+    response = app.response_class(
+            response=json.dumps({"result":"OK - healthy"}),
+            status=200,
+            mimetype='application/json'
+    )
+    app.logger.info('Health request successfull')
+    return response
+
+@app.route('/metrics')
+def metrics():
+    connection = get_db_connection()
+    post_count = connection.execute('SELECT count(id) FROM posts')
+    row = post_count.fetchone()
+    connection.close()
+    response = app.response_class(
+            response=json.dumps({"post_count": row[0], "db_connection_count": app.connection_count}),
+            status=200,
+            mimetype='application/json'
+    )
+    app.logger.info('Metrics request successfull')
+    return response
 
 # start the application on port 3111
 if __name__ == "__main__":
