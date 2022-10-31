@@ -1,4 +1,6 @@
 import sqlite3
+import logging
+from datetime import datetime
 
 from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
 from werkzeug.exceptions import abort
@@ -39,13 +41,16 @@ def index():
 def post(post_id):
     post = get_post(post_id)
     if post is None:
+      app.logger.debug("%s Article %s not found", datetime.now().strftime("%d/%m/%Y %H:%M:%S"), post_id)
       return render_template('404.html'), 404
     else:
+      app.logger.debug("%s Article %s retrieved!", datetime.now().strftime("%d/%m/%Y %H:%M:%S"), post['title'])
       return render_template('post.html', post=post)
 
 # Define the About Us page
 @app.route('/about')
 def about():
+    app.logger.debug("%s About Us loaded", datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
     return render_template('about.html')
 
 # Define the post creation functionality 
@@ -63,7 +68,7 @@ def create():
                          (title, content))
             connection.commit()
             connection.close()
-
+            app.logger.debug("%s New article created: %s", datetime.now().strftime("%d/%m/%Y %H:%M:%S", title))
             return redirect(url_for('index'))
 
     return render_template('create.html')
@@ -75,7 +80,7 @@ def healthcheck():
             status=200,
             mimetype='application/json'
     )
-    app.logger.info('Health request successfull')
+    app.logger.debug('Health request successfull')
     return response
 
 @app.route('/metrics')
@@ -89,9 +94,10 @@ def metrics():
             status=200,
             mimetype='application/json'
     )
-    app.logger.info('Metrics request successfull')
+    app.logger.debug('Metrics request successfull')
     return response
 
 # start the application on port 3111
 if __name__ == "__main__":
+   logging.basicConfig(encoding='utf-8', level=logging.DEBUG)
    app.run(host='0.0.0.0', port='3111')
