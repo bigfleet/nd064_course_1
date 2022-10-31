@@ -8,6 +8,11 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./project
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
     steps:
       -
         name: Set up QEMU
@@ -25,7 +30,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: "./project/techtrends"
-          file: "./project/Dockerfile"
+          context: "./techtrends"
+          file: "./Dockerfile"
           push: true
           tags: bigfleet/techtrends:latest
