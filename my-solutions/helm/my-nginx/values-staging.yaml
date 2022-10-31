@@ -9,4 +9,4 @@ resources:
     memory: 128Mi
 
 configMap:
-  version: "1.18.0"
+  version: "1.22.0"

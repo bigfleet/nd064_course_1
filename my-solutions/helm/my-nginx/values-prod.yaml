@@ -2,7 +2,7 @@ namespace: prod
 replicaCount: 2
 
 image:
-  tag: 1.17.0
+  tag: 1.21.0
 
 resources:
   requests:
@@ -12,4 +12,4 @@ service:
   port: 80
 
 configMap:
-  version: "1.17.0"
+  version: "1.21.0"
