@@ -25,7 +25,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: "project/techtrends/."
-          file: "project/Dockerfile"
+          context: "./project/techtrends"
+          file: "./project/Dockerfile"
           push: true
           tags: bigfleet/techtrends:latest
