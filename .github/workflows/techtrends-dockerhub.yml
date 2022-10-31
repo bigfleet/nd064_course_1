@@ -8,6 +8,10 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: project
+
     steps:
       -
         name: Set up QEMU
@@ -26,11 +30,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKER_SECRET }}
-      # -
-      #   name: Build and push
-      #   uses: docker/build-push-action@v3
-      #   with:
-      #     context: "./project/techtrends"
-      #     file: "../Dockerfile"
-      #     push: true
-      #     tags: bigfleet/techtrends:latest
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: "./techtrends"
+          file: "./Dockerfile"
+          push: true
+          tags: bigfleet/techtrends:latest
