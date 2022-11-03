@@ -75,13 +75,26 @@ def create():
 
 @app.route('/healthz')
 def healthcheck():
-    response = app.response_class(
-            response=json.dumps({"result":"OK - healthy"}),
-            status=200,
-            mimetype='application/json'
-    )
-    app.logger.debug('Health request successfull')
-    return response
+    try:
+        connection = get_db_connection()
+        post_count = connection.execute('SELECT count(id) FROM posts')
+        row = post_count.fetchone()
+        connection.close()
+        response = app.response_class(
+                response=json.dumps({"result":"OK - healthy"}),
+                status=200,
+                mimetype='application/json'
+        )
+        app.logger.debug('Health request successfull')
+        return response
+    except Exception as inst:
+        response = app.response_class(
+                response=json.dumps({"result":"ERROR - unhealthy"}),
+                status=500,
+                mimetype='application/json'
+        )
+        app.logger.debug('Health request failed')
+        return response
 
 @app.route('/metrics')
 def metrics():
