@@ -6,6 +6,20 @@ I actually wrote something here.
 
 Thanks for having a look.  I also included some run notes from the experience here.
 
+### Python 3.8 vs 3.10
+
+I am not a Python platform person.  Sincere love and respect to our Python people
+of the world, I am simple not one of them.
+
+The documentation for `logging` has broadly been updated to examples that fail when
+they are run on Python 3.8.  Running them on Python 3.10 works.  So rather than track
+down older logging examples that could run on 3.8 per the instructions, I used 3.10.
+
+The rubric, as it turns out, says to use _2.7_, so -- quite a difference.  Even us
+Python aliens heard about how much struggle was involved in Python 2 -> 3.
+
+
+
 ### M1 Mac
 
 I know that I was warned against it, but it was my most convenient machine, and I 
